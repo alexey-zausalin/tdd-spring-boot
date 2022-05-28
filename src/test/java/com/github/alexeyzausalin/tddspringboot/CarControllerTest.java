@@ -34,4 +34,12 @@ public class CarControllerTest {
                 .andExpect(jsonPath("name").value("prius"))
                 .andExpect(jsonPath("type").value("hybrid"));
     }
+
+    @Test
+    public void getCar_notFound() throws Exception {
+        given(carService.getCarDetails(anyString())).willThrow(new CarNotFoundException());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/car/prius"))
+                .andExpect(status().isNotFound());
+    }
 }
